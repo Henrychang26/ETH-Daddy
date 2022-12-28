@@ -15,6 +15,7 @@ import config from "./config.json";
 function App() {
   const [provider, setProvider] = useState(null);
   const [account, setAccount] = useState(null);
+
   const [ethDaddy, setETHDaddy] = useState(null);
   const [domains, setDomains] = useState([]);
 
@@ -23,8 +24,6 @@ function App() {
     setProvider(provider);
 
     const network = await provider.getNetwork();
-    console.log(network);
-
     const ethDaddy = new ethers.Contract(
       config[network.chainId].ETHDaddy.address,
       ETHDaddy,
@@ -39,6 +38,7 @@ function App() {
       const domain = await ethDaddy.getDomain(i);
       domains.push(domain);
     }
+
     setDomains(domains);
 
     window.ethereum.on("accountsChanged", async () => {
@@ -61,13 +61,14 @@ function App() {
       <Search />
 
       <div className="cards__section">
-        <h2 className="cards__title">Why you need a domain name</h2>
+        <h2 className="cards__title">Why you need a domain name.</h2>
         <p className="cards__description">
           Own your custom username, use it across services, and be able to store
           an avatar and other profile data.
         </p>
 
         <hr />
+
         <div className="cards">
           {domains.map((domain, index) => (
             <Domain

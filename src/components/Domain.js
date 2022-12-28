@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 
 const Domain = ({ domain, ethDaddy, provider, id }) => {
   const [owner, setOwner] = useState(null);
-  const [hasSold, setHasSold] = useState(null);
+  const [hasSold, setHasSold] = useState(false);
 
   const getOwner = async () => {
     if (domain.isOwned || hasSold) {
@@ -13,7 +13,7 @@ const Domain = ({ domain, ethDaddy, provider, id }) => {
   };
 
   const buyHandler = async () => {
-    const signer = await provider.getSinger();
+    const signer = await provider.getSigner();
     const transaction = await ethDaddy
       .connect(signer)
       .mint(id, { value: domain.cost });
@@ -28,7 +28,7 @@ const Domain = ({ domain, ethDaddy, provider, id }) => {
 
   return (
     <div className="card">
-      <div className="card__infor">
+      <div className="card__info">
         <h3>
           {domain.isOwned || owner ? (
             <del>{domain.name}</del>
@@ -36,6 +36,7 @@ const Domain = ({ domain, ethDaddy, provider, id }) => {
             <>{domain.name}</>
           )}
         </h3>
+
         <p>
           {domain.isOwned || owner ? (
             <>
@@ -57,6 +58,7 @@ const Domain = ({ domain, ethDaddy, provider, id }) => {
           )}
         </p>
       </div>
+
       {!domain.isOwned && !owner && (
         <button
           type="button"
